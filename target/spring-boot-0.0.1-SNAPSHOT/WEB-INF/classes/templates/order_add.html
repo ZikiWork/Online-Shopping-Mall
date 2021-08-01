@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>核对订单信息-${site}</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
+<script type="text/javascript" th:src="@{/js/jquery-2.0.3.js}"></script>
+<script type="text/javascript">
+
+/* 下单的时候： 获取地址 拼接为字符串 在赋给order*/
+$(function() {
+		$(".Radio").on("click", function() {
+		 let account=$(this).next().html();//导航找其兄弟元素
+		 let address1=$(this).next().next().html();
+		 let address2=$(this).next().next().next().html();
+		 let address=address1+" "+address2;
+		 let telphone=$(this).next().next().next().next().html();
+			console.log(account);
+			console.log(address);
+			console.log(telphone);
+			$(".orderaccount").val(account);
+			$(".orderaddress").val(address);
+			$(".ordertelphone").val(telphone);
+		});
+
+	})
+</script>
+</head>
+<body class="index">
+	<div class="brand_list container_2">
+		<div class="wrapper clearfix">
+			<div th:replace="~{commons::header}"></div>
+			<div class="position mt_10">
+				<span>您当前的位置：</span> <a href=""> 首页</a> » 填写核对订单信息
+			</div>
+			<div class="myshopping m_10">
+				<ul class="order_step">
+					<li class="current_prev"><span class="first"><a
+							href='javascript:window.history.go(-1);'>1、查看购物车</a></span></li>
+					<li class="current"><span>2、填写核对订单信息</span></li>
+					<li class="last"><span>3、成功提交订单</span></li>
+				</ul>
+			</div>
+
+			<form th:action='@{/order/add}' method='post' name='order_form'>
+				<div class="cart_box m_10">
+					<div class="title">填写核对订单信息</div>
+					<div class="cont">
+
+						<!--地址管理 开始-->
+						<div class="wrap_box">
+							<h3>
+								<span class="orange">收货人信息</span>
+							</h3>
+							<!--收货表单信息 开始-->
+							<div class="prompt_4 m_10" id='address_often'>
+								<strong>收货地址</strong>
+								</thead>
+								<ul class="addr_list">
+									<li th:each="address : ${addresses}"><label> 
+									<input class="Radio"  name="addressid" type="radio" th:value="${address.id}" /> &nbsp;&nbsp;&nbsp;
+											<span th:text="${address.reciever}">html</span>
+											<span th:text="|${address.province} ${address.city} ${address.AREA}|"></span>
+											<span th:text="${address.street}"></span>
+											<span th:text="${address.telphone}"></span>
+											<span thtext="${address.zip}"></span>
+									</label></li>
+								</ul>
+							</div>
+						</div>
+						<!-- 设置隐藏比表单  获取值 -->
+						<input type="text" class="orderaccount" name="account" />
+						<input type="text" class="orderaddress" name="address" />
+						<input type="text" class="ordertelphone" name="telphone" />
+						
+						<!--地址管理 结束-->
+						<div class="wrap_box" id="deliveryBox">
+							<h3>
+								<span class="orange">配送方式</span>
+							</h3>
+							<!--配送修改 开始-->
+							<table width="100%" class="border_table m_10" id="delivery_form"
+								style="display: table;">
+								<colgroup>
+									<col width="180px">
+									<col>
+								</colgroup>
+								<tbody id="deliveryFormTrBox">
+									<tr>
+										<th><label><input type="radio" name="sendway"
+												paytype="0" alt="20.00" value="快递" checked>快递</label></th>
+										<td>直接由第三方物流公司配送 运费：￥20.00 &nbsp;&nbsp;</td>
+									</tr>
+
+									<tr>
+										<th><label><input type="radio" name="sendway"
+												paytype="0" alt="10.00" value="EMS">EMS</label></th>
+										<td>运费：￥10.00 &nbsp;&nbsp;</td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<th>指定送货时间：</th>
+										<td><label class="attr"><input type="radio"
+												name="order.deliveryTime" checked="checked" value="任意">任意</label>
+											<label class="attr"><input type="radio"
+												name="order.deliveryTime" value="周一到周五">周一到周五</label> <label
+											class="attr"><input type="radio"
+												name="order.deliveryTime" value="周末">周末</label></td>
+									</tr>
+								</tfoot>
+							</table>
+							<!--配送修改 结束-->
+						</div>
+						<!--配送方式 结束-->
+
+						<!--支付方式 开始-->
+						<div class="wrap_box" id='paymentBox'>
+							<h3>
+								<span class="orange">支付方式</span>
+							</h3>
+
+							<table width="100%" class="border_table" id='payment_form'>
+								<col width="200px" />
+								<col />
+
+								<tr>
+									<th><label><input class="radio" name="payMode"
+											alt="0" title="支付宝" type="radio" value="支付宝" />支付宝</label></th>
+									<td>支付手续费：￥0</td>
+								</tr>
+								<tr>
+									<th><label><input class="radio" name="payMode"
+											alt="0" title="货到付款" type="radio" value="货到付款" />货到付款</label></th>
+									<td>支付手续费：￥0</td>
+								</tr>
+							</table>
+						</div>
+						<!--支付方式 结束-->
+						<!--购买清单 开始-->
+						<div class="wrap_box">
+							<h3>
+								<span class="orange">购买的商品</span>
+							</h3>
+
+							<table width="100%" class="cart_table t_c">
+								<col width="150px" />
+								<col />
+								<col width="110px" />
+								<col width="110px" />
+								<col width="110px" />
+
+								<thead>
+									<tr>
+										<th>图片</th>
+										<th>商品名称</th>
+										<th>单价</th>
+										<th>数量</th>
+										<th class="last">小计</th>
+									</tr>
+								</thead>
+
+								<tbody>
+
+									<tr th:each="book,bookStat: ${books}">
+										<!-- 隐藏表单  给定复杂参数！以便后台取值 -->
+										<!-- 添加索引！！！ -->
+										<input type="hidden"
+											th:name="orderDetalis[__${bookStat.index}__].book.id"
+											th:value="${book.id}">
+										<input type="hidden"
+											th:name="orderDetalis[__${bookStat.index}__].num"
+											th:value="${value[__bookStat.index__]}">
+										<input type="hidden"
+											th:name="orderDetalis[__${bookStat.index}__].price"
+											th:value="${book.saleprice}">
+
+										<td><img th:src="${book.image}" width="66px"
+											height="66px" th:alt="${book.name}" th:title="${book.name}" />
+										</td>
+										<td><a href="" class="blue" th:text="${book.name}">书名</a></td>
+										<td>￥<b th:text="${book.saleprice}">售价</b></td>
+
+										<td th:text="${value[__bookStat.index__]}">数量</td>
+										<!--加上"__" 双下划线 预处理！  -->
+										<td>￥<b class="red2"
+											th:text="${book.saleprice*value[__bookStat.index__]}">总价</b></td>
+
+									</tr>
+									<!-- 商品展示 结束-->
+
+								</tbody>
+							</table>
+						</div>
+						<!--购买清单 结束-->
+
+					</div>
+				</div>
+
+				<!--金额结算-->
+				<div class="cart_box" id='amountBox'>
+					<div class="cont_2">
+						<strong>结算信息</strong>
+						<div class="pink_box">
+							<p class="f14 t_l">
+								商品总金额：<b th:text="${totalprice}">${totalMoney}</b> + 运费总计：<b
+									id='delivery_fee_show'>0.00</b>
+							</p>
+						</div>
+						<hr class="dashed" />
+						<div class="pink_box gray m_10">
+							<table width="100%" class="form_table t_l">
+								<col width="220px" />
+								<col />
+								<col width="250px" />
+								<tr>
+									<td class="t_r"><b class="price f14">应付总额：<span
+											class="red2">￥<b id='final_sum'
+												th:text="${totalprice}">${totalMoney}</b></span>元
+									</b></td>
+								</tr>
+							</table>
+						</div>
+						<p class="m_10 t_r">
+							<input type="hidden" name=" " value=" "> <input
+								type="submit" class="submit_order" />
+						</p>
+					</div>
+				</div>
+
+			</form>
+
+		</div>
+		<div th:replace="~{commons::footer}"></div>
+	</div>
+</body>
+</html>

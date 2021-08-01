@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<!-- 静态页面1 -->
+	<div class="category" th:fragment="category">
+		<table id="index_category" class="sort_table m_10" width="100%">
+			<tr>
+				<td th:each="categoryes:${categoryes}">《<a
+					style="font-family: '楷体';"
+					th:href="@{/book/booklist/{categoryid}(categoryid=${categoryes.id})}"
+					th:text="${categoryes.name}">${category.name}</a>》
+				</td>
+			</tr>
+		</table>
+		
+		<!-- 静态页面2 -->
+	</div>
+	<div class="box m_10 green" name="showGoods"
+		th:each="category:${categorys}"   th:fragment="category_books">
+		<input type="hidden" class="hidden_input" th:value="${category.id}" />
+		<div class="title title3">
+			<h2>
+				<a href=""><strong style="font-family: '楷体';"
+					th:text="${category.name}">${category.name}</strong></a>
+			</h2>
+			<a class="more"
+				th:href="@{/book/booklist/{categoryid}(categoryid=${category.id})}">更多商品...</a>
+		</div>
+
+		<div class="cont clearfix">
+			<ul class="prolist"  th:classappend="|prolist${categoryStat.index}|">
+			<!-- 循环输出Book信息： -->
+				<li th:each="book:${category.books}" style="overflow: hidden"><a th:href="@{/bookview/{id}(id=${book.id})}"><img
+						th:src="${book.image}" width="160" height="175" alt="" title=""></a>
+					<p class="pro_title">
+						<a title="" th:href="@{/bookview/{id}(id=${book.id})}" th:text="${book.name}" ></a>
+					</p>
+					<p class="brown">
+						惊喜价：<b>￥<span th:text="${book.saleprice}"></b>
+					</p>
+					<p class="light_gray">
+						市场价：<s>￥<span th:text="${book.marketprice}"></span></s>
+					</p>
+				</li>
+			<!-- 循环book结束。 -->
+			</ul>
+		</div>
+
+	</div>
+
+
+
+</body>
+</html>

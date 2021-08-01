@@ -1,0 +1,26 @@
+server:
+  port: 8080
+logging:
+  config: classpath:logback-boot.xml
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
+  resources:
+    static-locations:
+      0: file:E://springworkspace/
+      1: classpath:static
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths: /**
+  datasource:
+    username: root
+    password: zhouyuxin
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/online_shopping?&useUnicode=true&characterEncoding=UTF8&serverTimezone=GMT&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver

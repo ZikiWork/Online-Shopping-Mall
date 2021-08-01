@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<title>首页</title>
+<link type="text/css" rel="stylesheet" th:href="@{/css/index.css}" />
+<script type="text/javascript" th:src="@{/js/jquery-2.0.3.js}"></script>
+<script type="text/javascript" th:src="@{/js/template.js}"></script>
+<script type="text/javascript">
+	/*循环发送ajax请求获取各个类别的图书*/
+/* 	$(function() {
+		for (let i = 0; i < $(".hidden_input").length; i++) {
+			let categoryId = $(".hidden_input")[i].value;
+			console.log(categoryId);
+			$.getJSON("/" + categoryId, function(categoryBooks) {
+				console.log(categoryBooks);
+				//			for (let j = 0; j < categoryBooks.length; j++) {
+				let ht = template('tp', {
+					"categoryBook" : categoryBooks
+				});
+				$(".prolist" + i).append(ht);
+				//}
+			});
+		}
+	}) */ 
+//这里因为使用了静态页面 所以不必再循环发送请求数据
+</script>
+<!-- 使用模板产生图书信息！ -->
+<script id="tp" type="text/html"> 
+				{{each categoryBook as book}}
+							<li style="overflow: hidden"><a href=" "><img src="{{book.image}}" width="160"
+									height="175" alt="" title=""></a>
+								<p class="pro_title">
+									<a title="" href="" >{{book.name}}</a>
+								</p>
+								<p class="brown">
+									惊喜价：<b>￥{{book.saleprice}}</b>
+								</p>
+								<p class="light_gray">
+									市场价：<s>￥{{book.marketprice}}</s>
+								</p></li>
+{{/each}}
+	</script>
+
+</head>
+
+
+<body class="index">
+	<div class="container">
+		<div th:replace="~{commons::header}"></div>
+		<div th:replace="~{commons::navbar}"></div>
+		<div th:replace="~{commons::search}"></div>
+
+		<div class="wrapper clearfix">
+			<div class="sidebar f_r">
+				<!--热卖商品-->
+				<div class="hot box m_10">
+					<div class="title">
+						<h2>热卖商品</h2>
+					</div>
+					<div class="cont clearfix">
+						<ul class="prolist">
+							<li th:each="i : ${#numbers.sequence(1,2)}"><a href=""><img
+									src="images/goods/anmuxi.jpg" width="65" height="85" alt="" /></a>
+								<p class="pro_title">
+									<a href="">安慕希</a>
+								</p>
+								<p class="brown">
+									<b>￥58</b>
+								</p></li>
+							<li th:each="i : ${#numbers.sequence(1,2)}"><a href=""><img
+									src="images/goods/defu.jpg" width="65" height="85" alt="" /></a>
+								<p class="pro_title">
+									<a href="">德芙 ·巧克力</a>
+								</p>
+								<p class="brown">
+									<b>￥49</b>
+								</p></li>
+							<li th:each="i : ${#numbers.sequence(1,2)}"><a href=""><img
+									src="images/goods/apple.jpg" width="65" height="85" alt="" /></a>
+								<p class="pro_title">
+									<a href="">苹果（Apple）iPhone 6 (A1586) 64GB</a>
+								</p>
+								<p class="brown">
+									<b>￥5388</b>
+								</p></li>
+						</ul>
+					</div>
+				</div>
+				<!--热卖商品-->
+				<div class="book box m_10">
+					<div class="title">
+						<h2>电子订阅</h2>
+					</div>
+					<div class="cont">
+						<p>我们会将最新的资讯发到您的Email</p>
+						<input type="text" class="gray_m light_gray f_l" name='orderinfo'
+							value="输入您的电子邮箱地址" /> <label class="btn_orange"><input
+							type="button" onclick="orderinfo();" value="订阅" /></label>
+					</div>
+				</div>
+				<!--电子订阅-->
+
+			</div>
+			<div class="main f_l">
+				<ul class="bxslider">
+					<li title="新设计，新内核，新起点"><a href="" target="_blank"><img
+							src="" width="750px" height="300px" title="" /></a></li>
+				</ul>
+			</div>
+
+			<div class="main f_l">
+				<div class="category box">
+					<div class="title2">
+						<h2>
+							<img src="images/front/category.gif" alt="商品分类" width="155"
+								height="36" />
+						</h2>
+					</div>
+				</div>
+
+				<!-- 引入静态化页面 -->
+				<div th:replace="~{html/category}"></div>
+
+				<!-- 		<table  id="index_category" class="sort_table m_10" width="100%">
+					<tr>
+						<td th:each="categoryes:${categoryes}"> 《<a style="font-family:'楷体';"
+						th:href="@{/book/booklist/{categoryid}(categoryid=${categoryes.id})}"
+							th:text="${categoryes.name}">${category.name}</a>》</td>
+					</tr>
+				</table> -->
+				<!--最新商品-->
+				<div class="box yellow m_10">
+
+					<div class="title title3">
+						<h2>
+							<img th:src="@{/images/front/new_product.gif}" alt="最新商品"
+								width="160" height="36" />
+						</h2>
+					</div>
+					<div class="cont clearfix">
+						<ul class="prolist">
+							<li style="overflow: hidden" th:each="book : ${books}"><a
+								th:href="@{/bookview/{id}(id=${book.id})}" target="_blank"><img
+									th:src="${book.image}" width="160" height="175" alt="" /></a>
+								<p class="pro_title">
+									<a th:text="${book.name}" title="" href=""></a>
+								</p>
+								<p class="brown">
+									惊喜价：<b th:text="${book.saleprice}">￥</b>
+								</p>
+								<p class="light_gray">
+									市场价：
+									<del th:text="${book.marketprice}">￥</del>
+								</p></li>
+						</ul>
+					</div>
+				</div>
+				<!-- 引入静态化界面 -->
+				<div th:replace="~{html/category_books}"></div>
+
+				<!-- <div class="box m_10 green" name="showGoods"
+					th:each="category:${categorys}">
+					<input type="hidden" class="hidden_input" th:value="${category.id}" />
+					<div class="title title3">
+						<h2>
+							<a href=""><strong style="font-family:'楷体';" th:text="${category.name}">${category.name}</strong></a>
+						</h2>
+						<a class="more" th:href="@{/book/booklist/{categoryid}(categoryid=${category.id})}">更多商品...</a>
+					</div>
+
+					<div class="cont clearfix">
+						<ul class="prolist"
+							th:classappend="|prolist${categoryStat.index}|">
+							多个类名   后面的拼接一个索引！
+
+						</ul>
+					</div>
+				</div>
+ -->
+			</div>
+		</div>
+		<div th:replace="~{commons::help}"></div>
+		<div th:replace="~{commons::footer}"></div>
+	</div>
+</body>
+</html>

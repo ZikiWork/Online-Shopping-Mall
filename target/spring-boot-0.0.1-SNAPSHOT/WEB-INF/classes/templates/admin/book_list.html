@@ -1,0 +1,123 @@
+<!DOCTYPE html >
+<html>
+<head>
+<title>后台管理</title>
+<meta charset="utf-8" />
+<script type="text/javascript" th:src="@{/js/jquery-2.0.3.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}" />
+<script type="text/javascript" th:inline="javascript">/* 内联  */
+	function del(id) {
+		if (confirm("您确认删除该记录吗?")) {
+			location.href = "goods_del?goods.id=" + id;
+		}
+	} 
+	function goPage(p) {
+		$("#page").val(p);
+		$("#form1").prop("action","/book/list/"+p);
+		$("#form1").submit();
+	}
+	
+	$(function(){
+/*文本模板  */
+	[# th:if="[[book.category]]"]
+		$("#category").val([[${book.category==null?"":book.category.id}]]);
+		$("#name").val([[${book.name==null?"":book.name}]]);
+	[/]
+/* 文本模板 */
+
+})
+ 
+</script>
+</head>
+<body>
+	<div class="container">
+		<div id="header" th:insert="~{admin/commons::header}"></div>
+		<div id="admin_left">
+			<ul class="submenu" th:insert="~{admin/commons::left}">
+			</ul>
+		</div>
+		<div id="admin_right">
+			<div class="headbar">
+				<div class="searchbar">
+					<form th:action="@{/book/list/1}" method="get" id="form1">
+						<!-- 下拉框  select中准备传递的参数 name="category.id"-->
+						类别：
+						<select class="auto" name="category.id" id="category">
+							<!-- 加一个option 默认不选中！ -->
+							<option value="0">选择分类</option>
+							<option th:each="category:${categorys}" th:value="${category.id}"
+								th:text="${category.name}">选择分类</option>
+						</select> 商品名称： <input class="small" name="name" id="name" type="text">
+						<button class="btn" type="submit">
+							<span class="sel">筛 选</span>
+						</button>
+					</form>
+				</div>
+
+				<div class="field">
+					<table class="list_table">
+						<col width="40px" />
+						<col width="400px" />
+						<col width="120px" />
+						<col width="70px" />
+						<col width="70px" />
+						<col width="70px" />
+						<thead>
+							<tr>
+								<th>选择</th>
+								<th>图书名称</th>
+								<th>分类</th>
+								<th>销售价</th>
+								<th>库存</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<form action="" method="post" name="orderForm">
+				<div class="content">
+					<table class="list_table">
+						<col width="40px" />
+						<col width="400px" />
+						<col width="120px" />
+						<col width="70px" />
+						<col width="70px" />
+						<col width="70px" />
+						<tbody>
+							<tr th:each="book:${pageInfo.list}">
+								<!-- 遍历pageInfo中的属性！list -->
+								<td><input name="" type="checkbox" value="1" /></td>
+								<td><a href="" target="_blank" th:title="${book.name}"
+									th:text="${book.name}"></a></td>
+								<td th:text="${book.category.name}">${goods.category.name}</td>
+								<td th:text="${book.saleprice}">${goods.price2}</td>
+								<td th:text="${book.booknum}">${goods.stock}</td>
+								<td><a href="goods_initUpdate?goods.id=${goods.id}"><img
+										class="operator" th:src=@{/images/admin/icon_edit.gif}
+										alt="编辑" /></a> <a href="javascript:void(0)"
+									onclick="del('${book.id}')"><img class="operator"
+										th:src=@{/images/admin/icon_del.gif} alt="删除" /></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</form>
+
+			<div class='pages_bar'>
+				<a href="javascript:goPage(1)" id="first">首页</a>
+				<!--产生页码！  -->
+				<!-- 跳转到页码页！ 超链接，脚本等... -->
+				<a class="gopage" th:each="p:${#numbers.sequence(1,pageInfo.pages)}"
+					th:href="|javascript:goPage(${p})|" th:text="${p}">${p}</a>
+				<!-- 产生页码结束！ -->
+				<a th:href="|javascript:goPage(${pageInfo.navigateLastPage})|"
+					id="last">尾页</a><span>当前第<span th:text="${pageInfo.pageNum}"></span>页/共<span
+					th:text="${pageInfo.pages}"></span>页
+				</span>
+			</div>
+		</div>
+		<div id="separator"></div>
+	</div>
+</body>
+</html>

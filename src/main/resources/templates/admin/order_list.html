@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>后台管理</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" th:href="@{/css/admin.css}" />
+<script type="text/javascript" th:src="@{/js/jquery-2.0.3.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+
+/* 页码跳转！ */
+function goPage(p) {
+		$("#page").val(p);
+		$("#bookform").submit();
+	}
+	
+/* 将查询条件显示在条件框中 便于查找返回每一页加结果！*/
+$(function(){
+	$("#paystate").val([[${order.paystate==null?0:order.paystate}]]);
+	$("#status").val([[${order.status==null?0:order.status}]]);
+})
+
+</script>
+</head>
+<body>
+	<div class="container">
+		<div id="header" th:insert="~{admin/commons::header}"></div>
+		<div id="admin_left">
+			<ul class="submenu" th:insert="~{admin/commons::left}">
+			</ul>
+		</div>
+		<div id="admin_right">
+			<div class="headbar">
+				<div class="searchbar">
+					<form th:action="@{/order/list}" method="get" name="order_list"
+						id="bookform">
+						<input type="text" name="page" id="page" />
+						<!-- 隐藏 -->
+						<select name="paystate" id="paystate" class="auto">
+							<option value="0">选择状态</option>
+							<option value="A">待付款</option>
+							<option value="B">已付款</option>
+						</select> <select name="status" id="status" class="auto">
+							<option value="0">选择状态</option>
+							<option value="C">待发货</option>
+							<option value="D">已发货</option>
+							<option value="E">已完成</option>
+						</select>
+						<button class="btn" type="submit">
+							<span class="sel">筛 选</span>
+						</button>
+					</form>
+				</div>
+				<div class="field">
+					<table class="list_table">
+						<col width="30px" />
+						<col width="255px" />
+						<col width="100px" />
+						<col width="100px" />
+						<col width="100px" />
+						<col />
+						<thead>
+							<tr>
+								<th class="t_c">选择</th>
+								<th>订单号</th>
+								<th>收货人</th>
+								<th>状态</th>
+								<th>配送方式</th>
+								<th>支付方式</th>
+								<th>下单时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+					</table>
+
+				</div>
+			</div>
+
+			<form  name="orderForm" id="orderForm"
+				action="" method="post">
+				<div class="content">
+					<table class="list_table">
+						<colgroup>
+							<col width="30px" />
+							<col width="255px" />
+							<col width="100px" />
+							<col width="100px" />
+							<col width="100px" />
+							<col />
+
+						</colgroup>
+						<tbody>
+							<!-- 循环开始 -->
+							<tr th:each="order:${pageInfo.list}">
+								<td class="t_c"><input name="" type="checkbox"
+									th:value="${order.id}" /></td>
+								<td th:text="${order.orderNo}">${order.id}</td>
+								<td th:text="${order.account}">${order.address.accept}</td>
+								<td><span th:if="${order.status} eq 'A'">未发货</span><span
+									th:if="${order.status} eq 'B'">已发货</span><span
+									th:if="${order.status} eq 'C'">已完成</span> &nbsp;<span
+									th:if="${order.paystate} eq 'A'">未付款</span><span
+									th:if="${order.paystate} eq 'B'">已付款</span></td>
+								<td th:text="${order.sendway}">${order.deliveryType}</td>
+								<td th:text="${order.payMode}">${order.payType}</td>
+								<td th:text="${order.orderTime}"></td>
+								<td><a th:href="@{/order/order_view/{id}(id=${order.id})}"><img
+										class="operator" th:src="@{/images/admin/icon_check.gif}"
+										title="查看" /></a><a href=""><img class="operator"
+										th:src="@{/images/admin/icon_edit.gif}" title="编辑" /></a><a
+									href="javascript:void(0)" onclick=""><img class="operator"
+										th:src="@{/images/admin/icon_del.gif}" title="删除" /></a></td>
+							</tr>
+							<!--循环结束  -->
+						</tbody>
+					</table>
+				</div>
+				<!--分页  -->
+				<div class='pages_bar'>
+					<a href="javascript:goPage(1)" id="first">首页</a>
+					<!--产生页码！  -->
+					<!-- 跳转到页码页！ 超链接，脚本等... -->
+					<a class="gopage"
+						th:each="p:${#numbers.sequence(1,pageInfo.pages)}"
+						th:href="|javascript:goPage(${p})|" th:text="${p}">${p}</a>
+					<!-- 产生页码结束！ -->
+					<a th:href="|javascript:goPage(${pageInfo.navigateLastPage})|"
+						id="last">尾页</a><span>当前第<span
+						th:text="${pageInfo.pageNum}"></span>页/共<span
+						th:text="${pageInfo.pages}"></span>页
+					</span>
+				</div>
+			</form>
+		</div>
+		<div id="separator"></div>
+	</div>
+	<div
+		style="display: none; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; cursor: move; opacity: 0; background: rgb(255, 255, 255);"></div>
+</body>
+</html>

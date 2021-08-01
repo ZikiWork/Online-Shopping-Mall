@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link type="text/css" rel="stylesheet" th:href="@{/css/index.css}" />
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery-2.0.3.js"></script>
+<script type="text/javascript">
+	
+</script>
+</head>
+<body>
+	<div class="brand_list container_2">
+		<div th:replace="~{commons::header}"></div>
+
+		<div class="wrapper clearfix">
+			<div class="wrap_box">
+				<h3 class="notice">已注册用户，请登录</h3>
+				<p class="tips">欢迎来到我们的网站，如果您已是本站会员请登录</p>
+				<div class="box login_box clearfix">
+					<form th:action="@{/login}" method="post">
+						<input type="hidden" name="opr" value="login" />
+						<table width="515" class="form_table f_l">
+							<col width="120px" />
+							<col />
+							<tr>
+								<th>用户名：</th>
+								<td><input class="gray" type="text" name="account"
+									id="account" placeholder="请输入用户名" /><span id="namemsg"></span></td>
+							</tr>
+							<tr>
+								<th>密码：</th>
+								<td><input class="gray" type="password" id="password"
+									name="password" placeholder="请输入6-20位长度的密码" /><span
+									id="pwdmsg" style="color: red" th:text="${msg}"></span></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><input class="submit_login" type="submit" value="登录" /></td>
+							</tr>
+						</table>
+					</form>
+
+					<!--正常登录时-->
+					<table width="360px" class="form_table prompt_3 f_l">
+						<col width="75px" />
+						<col />
+						<tr>
+							<th></th>
+							<td>
+								<p class="mt_10">
+									<strong class="f14">您还不是<span class="orange">商城</span>用户
+									</strong>
+								</p>
+								<p>
+									现在免费注册成为嗨购商城用户，便能立即享受便宜又放心的购物乐趣。<a class="blue" href="">网站首页>></a>
+								</p>
+								<p class="mt_10">
+									<a class="reg_btn" href="">注册新用户</a>
+								</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div th:replace="~{commons::footer}"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>后台管理</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" th:href="@{/css/admin.css}" />
+<script type="text/javascript" src="js/jquery-2.0.3.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div id="header" th:insert="~{admin/commons::header}">
+		</div>
+		<div id="admin_left">
+			<ul class="submenu" th:insert="~{admin/commons::left}">
+			</ul>
+		</div>
+
+		<div id="admin_right">
+			<div class="content_box">
+				<div class="content form_content">
+					<form th:action="@{/category/add}" method="post">
+						<table class="form_table" cellpadding="0" cellspacing="0">
+							<col width="150px" />
+							<col />
+							<tr>
+								<th>分类名称：</th>
+								<td><input class="normal" name="name" type="text"
+									value=""><label>* 必选项</label></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td><button class="submit" type="submit">
+										<span>确 定</span>
+									</button></td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div id="separator"></div>
+	</div>
+</body>
+</html>

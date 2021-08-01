@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table border="1">
+		<tr>
+			<th>序号</th>
+			<th>id</th>
+			<th>类别</th>
+		</tr>
+		<tr th:each="category: ${categorys} ">
+			<td th:text="${categoryStat.count}">序号</td>
+			<td th:text="${category.id}">id</td>
+			<td th:text="${category.name}">类别</td>
+			<!-- <div>
+						<a th:href="@{'update/'+${user.id}}">修改</a>thymeleaf中 href用法！
+						<a  th:href="@{'delete/'+${user.id}}">删除</a>
+					</div> -->
+			</td>
+		</tr>
+	</table>
+
+</body>
+</html>

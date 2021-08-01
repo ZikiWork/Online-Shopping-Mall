@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>后台管理</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" th:href="@{/css/admin.css}" />
+<script type="text/javascript">
+	function deliver(){
+		$.getJSON("order_delivery?order.id=${order.id}");
+	}
+</script>
+</head>
+<body>
+	<div class="container">
+		<div id="header" th:insert="~{admin/commons::header}">
+		</div>
+		<div id="admin_left">
+			<ul class="submenu" th:insert="~{admin/commons::left}">
+			</ul>
+		</div>
+		<div id="admin_right">
+			<div id="tab-1" name="table">
+				<div class="content">
+					<table class="list_table">
+						<col width="550px" />
+						<col width="100px" />
+						<col width="100px" />
+						<col />
+						<thead>
+							<tr>
+								<th>商品名称</th>
+								<th>价格</th>
+								<th>商品数量</th>
+								<th>小计</th>
+							</tr>
+						</thead>
+						<tbody>
+						
+								<tr th:each="orderDetails:${order.orderDetails}">
+									<td th:text="${orderDetails.book.name}">${orderDetail.goods.name}</td>
+									<td th:text="${orderDetails.book.saleprice}">${orderDetail.goods.price2}</td>
+									<td th:text="${orderDetails.num}">${orderDetail.nums}</td>
+									<td th:text="${orderDetails.book.saleprice}*${orderDetails.num}">${orderDetail.goods.price2 * orderDetail.nums}</td>
+								</tr>
+							
+						</tbody>
+					</table>
+
+					<table style="width:300px;margin-right:20px;"
+						class="border_table f_l">
+						<col width="80px" />
+						<col />
+						<thead>
+							<tr>
+								<th colspan="2">订单信息</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>订单总额:</th>
+								<td th:text="${order.totalMoney}">￥${order.totalMoney}</td>
+							</tr>
+							<tr>
+								<th>已支付金额:</th>
+								<td>￥<span th:if="${order.paystate eq 'A'}" th:text="0">0</span>
+								<span th:if="${order.paystate eq 'B'}" th:text="${order.totalMoney}">0</span>
+								</td>
+							</tr>
+							<tr>
+								<th>配送方式:</th>
+								<td th:text="${order.sendway}">${order.deliveryType}</td>
+							</tr>
+							<tr>
+								<th>支付方式:</th>
+								<td th:text="${order.payMode}">${order.payType}</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table style="width:300px;margin-right:20px;"
+						class="border_table f_l">
+						<col width="80px" />
+						<col />
+						<thead>
+							<tr>
+								<th colspan="2">收货人信息</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>发货日期:</th>
+								<td th:text="${order.orderTime}"></td>
+							</tr>
+							<tr>
+								<th>姓名:</th>
+								<td th:text="${order.account}">${order.address.accept}</td>
+							</tr>
+							<tr>
+								<th>联系电话:</th>
+								<td th:text="${order.telphone}">${order.address.phoneNum}</td>
+							</tr>
+							<tr>
+								<th>地址:</th>
+								<td th:text="${order.address}">${order.address.address}</td>
+							</tr>
+							<tr>
+								<th>邮编:</th>
+								<td>631110</td>
+							</tr>
+							<tr>
+								<th>送货时间:</th>
+								<td>2018-08-08</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<table style="width:300px;margin-right:20px;"
+						class="border_table f_l">
+						<col width="80px" />
+						<col />
+						<thead>
+							<tr>
+								<th colspan="2">商城用户信息</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>用户名:</th>
+								<td th:text="${order.user.account}"></td>
+							</tr>
+							<tr>
+								<th>Email:</th>
+								<td th:text="${order.user.email}"></td>
+							</tr>
+							<tr>
+								<th>注册时间:</th>
+								<td>2017-07-07 21:22:40</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="pages_bar">
+				<div class="t_c" id="ctrlButtonArea">
+					<button type="button" class="btn" id="to_deliver"
+						onclick="deliver();">
+						<span>发货</span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div id="separator"></div>
+	</div>
+
+</body>
+</html>

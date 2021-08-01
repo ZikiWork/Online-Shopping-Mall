@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"></meta>
+<base href="${base}/" />
+<title>个人中心_${site}</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" />
+<script type="text/javascript" th:src="@{/js/jquery-2.0.3.js}"></script>
+<!-- <jsp:include page="../base.jsp" /> -->
+</head>
+<body class="index">
+	<div class="ucenter container">
+		<div th:replace="~{commons::header}"></div>
+		<div th:replace="~{commons::navbar}"></div>
+		<div th:replace="~{commons::search}"></div>
+		<div class="wrapper clearfix">
+			<div th:replace="~{users/commons::left}"></div>
+			<div class="main f_r">
+				<div class="userinfo_bar">
+					<b class="f14">您好，${sessionScope.user.name} 欢迎回来!</b>
+				</div>
+				<div class="box clearfix">
+					<h3>用户信息</h3>
+					<dl class="userinfo_box">
+						<form th:action="@{/user/updatePhoto}" method="post"
+							enctype="multipart/form-data">
+							<input type="file" name="photoFile"> <input type="submit"
+								value="上传">
+						</form>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div th:replace="~{commons::help}"></div>
+		<div th:replace="~{commons::footer}"></div>
+	</div>
+</body>
+</html>
