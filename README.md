@@ -1,5 +1,5 @@
 # Online-Shopping-Mall
-网上商城项目
+基于Spring boot thymeleaf引擎模板 raty评分等 插件构建
 # 代码请见master分支
 此项目为一个校园网上商城项目
 # 介绍
